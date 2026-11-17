@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spring in Roseto · Dorina's Kitchen (Sample Design)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F1E6; --paper:#FBF8F2; --ink:#2A2620; --muted:#6E655A;
+  --olive:#4E5A3A; --olive-d:#353E27; --terra:#B4532F; --gold:#B8955A; --line:#E3D8C5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;font-weight:300;color:var(--ink);background:var(--paper);line-height:1.65;font-size:17px}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.serif{font-family:"Cormorant Garamond",Georgia,serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--terra)}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+h2{font-size:clamp(36px,4.6vw,58px)}
+h2 em,h1 em{font-style:italic;color:var(--terra)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:2px;font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;transition:.25s}
+.btn-primary{background:var(--terra);color:#fff}
+.btn-primary:hover{background:#9c4425}
+.btn-ghost{border:1px solid rgba(255,255,255,.7);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.sample{display:inline-block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;border:1px dashed currentColor;padding:3px 8px;border-radius:2px;opacity:.75;font-weight:500}
+
+/* nav */
+nav{position:absolute;top:34px;left:0;right:0;z-index:10;color:#fff}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:86px}
+.logo{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:500;letter-spacing:.01em}
+.logo span{font-style:italic;color:#F1D9A8}
+.navlinks{display:flex;gap:34px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:400}
+.navlinks a{opacity:.88}
+.navcta{border:1px solid rgba(255,255,255,.65);padding:10px 20px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+
+/* hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,16,10,.45) 0%,rgba(20,16,10,.3) 35%,rgba(20,16,10,.45) 60%,rgba(20,16,10,.82) 100%)}
+.hero .wrap{position:relative;z-index:2;padding-bottom:64px;width:100%}
+.hero .eyebrow{color:#F1D9A8}
+.hero h1{font-size:clamp(50px,7.6vw,104px);margin:18px 0 22px;max-width:900px;font-weight:400}
+.hero h1 em{color:#F6DFAE;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.hero p.lead{font-size:20px;max-width:620px;opacity:.92;margin-bottom:36px}
+.hero .ctas{display:flex;gap:14px;flex-wrap:wrap}
+.facts{position:relative;z-index:2;margin-top:58px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.3)}
+.facts div{padding:20px 20px 0 0}
+.facts b{display:block;font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:500}
+.facts small{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+
+/* intro */
+section{padding:120px 0}
+.intro{display:grid;grid-template-columns:1.05fr 1fr;gap:90px;align-items:center}
+.intro .photo{position:relative}
+.intro .photo img{aspect-ratio:4/5;object-fit:cover;width:100%}
+.intro .photo .tag{position:absolute;right:-26px;bottom:38px;background:var(--olive);color:#fff;padding:22px 26px;max-width:250px}
+.intro .photo .tag .serif{font-size:24px;font-style:italic;line-height:1.2}
+.intro .photo .tag small{display:block;margin-top:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+.intro h2{margin:18px 0 28px}
+.intro p{color:var(--muted);margin-bottom:18px;font-size:18px}
+.sig{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:30px;color:var(--terra);margin-top:10px}
+
+/* days */
+.days{background:var(--cream)}
+.sechead{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:60px}
+.sechead p{max-width:420px;color:var(--muted)}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pillar img{aspect-ratio:4/5;object-fit:cover;width:100%;margin-bottom:26px}
+.pillar .num{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--terra);font-size:22px}
+.pillar h3{font-size:36px;margin:4px 0 14px}
+.pillar ul{list-style:none;color:var(--muted);font-size:16px}
+.pillar li{padding:9px 0;border-bottom:1px solid var(--line)}
+
+/* quote */
+.quote{position:relative;color:#fff;padding:150px 0;overflow:hidden}
+.quote img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.quote::after{content:"";position:absolute;inset:0;background:rgba(30,26,18,.62)}
+.quote .wrap{position:relative;z-index:2;max-width:920px;text-align:center}
+.quote blockquote{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,3.4vw,44px);line-height:1.25;font-style:italic;font-weight:400}
+.quote cite{display:block;margin-top:30px;font-style:normal;font-size:13px;letter-spacing:.2em;text-transform:uppercase;opacity:.85}
+.quote .mark{font-family:"Cormorant Garamond",serif;font-size:120px;line-height:.5;color:#F1D9A8;display:block;margin-bottom:24px}
+
+/* heritage */
+.heritage{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--olive-d);color:#fff}
+.heritage img{width:100%;height:100%;object-fit:cover;min-height:560px}
+.heritage .txt{padding:100px 80px;display:flex;flex-direction:column;justify-content:center}
+.heritage .eyebrow{color:#E7C68C}
+.heritage h2{margin:18px 0 26px}
+.heritage h2 em{color:#E7C68C}
+.heritage p{opacity:.85;margin-bottom:18px;font-size:18px}
+.heritage ul{list-style:none;margin:10px 0 34px}
+.heritage li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.16);display:flex;gap:14px}
+.heritage li::before{content:"✦";color:#E7C68C;font-size:12px;margin-top:5px}
+
+/* included */
+.incl{display:grid;grid-template-columns:1.3fr 1fr;gap:70px}
+.incl-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:40px}
+.incl-grid div{padding:15px 0;border-bottom:1px solid var(--line);display:flex;gap:14px;font-size:16px}
+.incl-grid div::before{content:"";flex:0 0 7px;height:7px;border-radius:50%;background:var(--olive);margin-top:9px}
+.card{background:var(--cream);padding:46px 42px;align-self:start;border-top:3px solid var(--terra)}
+.card h3{font-size:32px;margin:12px 0 14px}
+.card p{color:var(--muted);font-size:16px;margin-bottom:16px}
+.card .row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+.card .row span:last-child{font-weight:500}
+.card .btn{width:100%;justify-content:center;margin-top:28px}
+.card .note{font-size:13px;margin-top:14px;text-align:center}
+
+/* steps */
+.steps{background:var(--cream)}
+.steprow{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+.step{padding:36px 36px 0 0}
+.step .n{font-family:"Cormorant Garamond",serif;font-size:64px;line-height:1;color:var(--terra);font-style:italic}
+.step h3{font-size:30px;margin:14px 0 10px}
+.step p{color:var(--muted);font-size:16px;max-width:300px}
+
+/* form */
+.apply{display:grid;grid-template-columns:1fr 1.15fr;gap:80px;align-items:start}
+.apply h2{margin:18px 0 22px}
+.apply .side p{color:var(--muted);font-size:18px;margin-bottom:22px}
+.apply .side img{margin-top:30px;aspect-ratio:3/2;object-fit:cover;width:100%}
+form{background:#fff;padding:50px;box-shadow:0 30px 80px -40px rgba(60,40,20,.35);border:1px solid var(--line)}
+form .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+label{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin:20px 0 8px;color:var(--muted)}
+input,select,textarea{width:100%;border:none;border-bottom:1px solid #CFC2AC;padding:10px 0;font:inherit;font-size:16px;background:transparent;color:var(--ink);outline:none}
+textarea{resize:none;height:76px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips span{border:1px solid #CFC2AC;padding:9px 16px;font-size:14px;border-radius:40px;cursor:pointer}
+.chips span.on{background:var(--olive);border-color:var(--olive);color:#fff}
+form .btn{width:100%;justify-content:center;margin-top:34px;border:none;cursor:pointer}
+form .fine{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}
+
+/* more trips */
+.more{background:var(--cream);padding:100px 0}
+.trips{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.trip img{aspect-ratio:3/2;object-fit:cover;width:100%}
+.trip .meta{padding:22px 0}
+.trip small{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);font-weight:500}
+.trip h3{font-size:28px;margin:6px 0 8px}
+.trip a{font-size:13px;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:3px}
+
+footer{background:var(--ink);color:#d9cfbf;padding:70px 0 40px;font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+footer .logo{color:#fff}
+footer p{opacity:.7;margin-top:10px;max-width:360px}
+
+.mbar{display:none}
+.banner-sample{background:var(--ink);color:#F1D9A8;text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:9px 12px;position:relative;z-index:20}
+
+@media (max-width:900px){
+  body{font-size:16px}
+  .navlinks{display:none}
+  section{padding:80px 0}
+  .hero{min-height:auto;padding-top:150px}
+  .hero h1{font-size:46px}
+  .facts b{font-size:22px}
+  .hero p.lead{font-size:17px}
+  .facts{grid-template-columns:1fr 1fr}
+  .intro,.incl,.apply,.heritage{grid-template-columns:1fr;gap:50px}
+  .intro .photo .tag{right:12px;bottom:12px}
+  .sechead{flex-direction:column;align-items:flex-start}
+  .pillars,.trips,.steprow{grid-template-columns:1fr}
+  .heritage .txt{padding:70px 28px}
+  .heritage img{min-height:340px}
+  .incl-grid{grid-template-columns:1fr}
+  form{padding:30px 24px}
+  form .two{grid-template-columns:1fr}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--paper);border-top:1px solid var(--line);padding:12px 16px;gap:12px;align-items:center;justify-content:space-between}
+  .mbar small{font-size:12px;color:var(--muted);line-height:1.3}
+  .mbar b{display:block;font-family:"Cormorant Garamond",serif;font-size:20px;color:var(--ink);font-weight:600}
+  .mbar .btn{padding:13px 20px;font-size:12px}
+  footer{padding-bottom:110px}
+}
+</style>
+</head>
+<body>
+
+<div class="banner-sample">Sample design by GenieRocket · Not live · Photos from dorinaskitchen.com</div>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">Dorina's <span>Kitchen</span></div>
+    <div class="navlinks"><a href="#experience">The Experience</a><a href="#heritage">Your Roots</a><a href="#join">How to Join</a><a href="#more">2027 Trips</a></div>
+    <a class="navcta" href="#apply">Apply</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="img/sunset.jpg" alt="Sunset over Roseto Valfortore">
+  <div class="wrap">
+    <div class="eyebrow">Spring in Roseto &nbsp;·&nbsp; April 23 – May 3, 2027</div>
+    <h1>Come to Italy as a guest. <em>Leave as family.</em></h1>
+    <p class="lead">Ten days in Roseto Valfortore, the mountain village where the Roseto Effect is still a way of life. Cook with the nonnas, wander the piazza, and take your seat at the table.</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="#apply">Apply for a seat →</a>
+      <a class="btn btn-ghost" href="#experience">See the experience</a>
+    </div>
+    <div class="facts">
+      <div><b>10 days</b><small>April 23 – May 3</small></div>
+      <div><b>Roseto Valfortore</b><small>Southern Italy</small></div>
+      <div><b>Small group</b><small>Hosted by Dorina</small></div>
+      <div><b>Door to door</b><small>Naples or Bari airport</small></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap intro">
+    <div class="photo">
+      <img src="img/dorina.jpg" alt="Dorina raising a glass">
+      <div class="tag"><div class="serif">"We make friends first. It's the Italian way."</div><small>— Dorina</small></div>
+    </div>
+    <div>
+      <div class="eyebrow">A personal invitation</div>
+      <h2>This isn't a tour. <em>It's a homecoming.</em></h2>
+      <p>Every spring, the mountains around Roseto start to bloom, and I open my village to a small group of new friends. We cook. We walk. We eat (a lot). We sit in the piazza like people used to, with time for one another.</p>
+      <p>I don't just put these trips on the internet and wait for people to show up. I get to know every guest first. That's why we start with a conversation.</p>
+      <div class="sig">Con amore, Dorina</div>
+    </div>
+  </div>
+</section>
+
+<section class="days" id="experience">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="eyebrow">Ten days at the table</div><h2>Cook. Explore. <em>Belong.</em></h2></div>
+      <p>Village life in Southern Italy, with towns dating back more than a thousand years, and wine with every meal.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <img src="img/cook.jpg" alt="Guests at a long table">
+        <div class="num">i.</div><h3>Cook</h3>
+        <ul><li>Lessons with Mamma Dorina and Chef Giuseppe</li><li>Recipes from the village nonnas</li><li>Olive oil tasting: tell the good from the not so good</li></ul>
+      </div>
+      <div class="pillar">
+        <img src="img/banner.jpg" alt="Roseto Valfortore on the hillside">
+        <div class="num">ii.</div><h3>Explore</h3>
+        <ul><li>Walking tour of Roseto's history and traditions</li><li>Day trip to Lucera's Roman amphitheater</li><li>A long lunch at a local winery</li></ul>
+      </div>
+      <div class="pillar">
+        <img src="img/easter.jpg" alt="Village procession">
+        <div class="num">iii.</div><h3>Belong</h3>
+        <ul><li>Welcome dinner with the village</li><li>Market day in the streets</li><li>Evenings with the town's social clubs</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote">
+  <img src="img/spring.jpg" alt="Spring flowers in the mountains">
+  <div class="wrap">
+    <span class="mark">"</span>
+    <blockquote>I wasn't a tourist in the town. The people welcomed me and I became part of the town. An inner peace surfaces within you, and it's a feeling you want to hold on to forever.</blockquote>
+    <cite>Niki P. &nbsp;·&nbsp; Ocean City, Maryland</cite>
+  </div>
+</div>
+
+<div class="heritage" id="heritage">
+  <img src="img/village.jpg" alt="Guests researching family records">
+  <div class="txt">
+    <div class="eyebrow">Turismo delle radici</div>
+    <h2>Walk the streets <em>your family walked.</em></h2>
+    <p>Have Italian roots? Every trip can include time to explore them, and if your family came from Roseto, you're especially in the right place.</p>
+    <ul>
+      <li>A visit to the Town Hall to look up family records</li>
+      <li>Help from our genealogist with your family tree</li>
+      <li>Plan ahead with Dorina when you book</li>
+    </ul>
+    <div><a class="btn btn-primary" href="#apply">Tell Dorina your family's story →</a></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap incl">
+    <div>
+      <div class="eyebrow">What's included</div>
+      <h2>Everything but <em>the flight.</em></h2>
+      <div class="incl-grid">
+        <div>Airport transfers from Naples or Bari</div>
+        <div>All transportation during the trip</div>
+        <div>Modern village B&amp;Bs with breakfast</div>
+        <div>Welcome dinner</div>
+        <div>Cooking lessons and workshops</div>
+        <div>Winery visit and tasting</div>
+        <div>Olive oil tasting lesson</div>
+        <div>Day trip to Lucera</div>
+        <div>Restaurant meals and picnics</div>
+        <div>Wine with meals</div>
+      </div>
+      <p style="color:var(--muted);font-size:15px;margin-top:24px">Some details vary by season. Airfare isn't included, but Dorina will connect you with her trusted travel agents.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Spring 2027</div>
+      <h3>Reserve your seat</h3>
+      <p>Pricing is shared personally on your call with Dorina.</p>
+      <div class="row"><span>Dates</span><span>Apr 23 – May 3, 2027</span></div>
+      <div class="row"><span>Group size</span><span>Small &amp; personal</span></div>
+      <div class="row"><span>Seats remaining</span><span>[ # ] <span class="sample">Sample</span></span></div>
+      <div class="row"><span>Apply by</span><span>[ date ] <span class="sample">Sample</span></span></div>
+      <a class="btn btn-primary" href="#apply">Start my application</a>
+      <p class="note">Takes about 2 minutes. No payment today.</p>
+    </div>
+  </div>
+</section>
+
+<section class="steps" id="join">
+  <div class="wrap">
+    <div class="sechead"><div><div class="eyebrow">How to join</div><h2>Three steps <em>to the table.</em></h2></div></div>
+    <div class="steprow">
+      <div class="step"><div class="n">1</div><h3>Apply</h3><p>Tell us who's coming, what you're dreaming of, and where your family is from.</p></div>
+      <div class="step"><div class="n">2</div><h3>Talk with Dorina</h3><p>A friendly call to get to know you, answer questions, and share full details and pricing.</p></div>
+      <div class="step"><div class="n">3</div><h3>Reserve your seat</h3><p>Secure your spot with a deposit, then start counting the days. Andiamo!</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="apply">
+  <div class="wrap apply">
+    <div class="side">
+      <div class="eyebrow">Your application</div>
+      <h2>There's a chair <em>waiting for you.</em></h2>
+      <p>Fill this out and Dorina will reach out personally to set up your call. Prefer to talk now? Message her on WhatsApp.</p>
+      <img src="img/table.jpg" alt="Dorina and Giuseppe">
+    </div>
+    <form onsubmit="return false">
+      <div class="two">
+        <div><label>First name</label><input placeholder="Maria"></div>
+        <div><label>Last name</label><input placeholder="Rossi"></div>
+      </div>
+      <div class="two">
+        <div><label>Email</label><input placeholder="you@email.com"></div>
+        <div><label>Phone / WhatsApp</label><input placeholder="(555) 555-5555"></div>
+      </div>
+      <label>Which trip interests you?</label>
+      <select><option>Spring in Roseto · Apr 23 – May 3, 2027</option><option>San Filippo Feast · May 21–31, 2027</option><option>Roseto Summer · Jun 25 – Jul 5, 2027</option><option>A private or heritage trip</option></select>
+      <label>Who's coming?</label>
+      <div class="chips"><span>Just me</span><span class="on">Me + 1</span><span>Family</span><span>Group of 6+</span></div>
+      <label>Do you have Italian roots?</label>
+      <input placeholder="e.g. My grandmother was from Roseto Valfortore">
+      <label>What are you most dreaming of?</label>
+      <textarea placeholder="Cooking with the nonnas, finding family records, slowing down..."></textarea>
+      <button class="btn btn-primary">Send my application →</button>
+      <p class="fine">Dorina reads every application personally.</p>
+    </form>
+  </div>
+</section>
+
+<div class="more" id="more">
+  <div class="wrap">
+    <div class="sechead"><div><div class="eyebrow">More 2027 trips</div><h2>Can't make spring? <em>Come in May or summer.</em></h2></div></div>
+    <div class="trips">
+      <div class="trip"><img src="img/easter.jpg" alt=""><div class="meta"><small>May 21–31, 2027</small><h3>San Filippo Patron Saint Feast</h3><a href="#apply">Learn more</a></div></div>
+      <div class="trip"><img src="img/sunset.jpg" alt=""><div class="meta"><small>Jun 25 – Jul 5, 2027</small><h3>Roseto Summer: From the Village to the Sea</h3><a href="#apply">Learn more</a></div></div>
+      <div class="trip"><img src="img/village.jpg" alt=""><div class="meta"><small>Your dates</small><h3>Private &amp; Heritage Journeys</h3><a href="#apply">Plan yours</a></div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div><div class="logo">Dorina's <span style="font-style:italic;color:#F1D9A8">Kitchen</span></div><p>Saving the world, one table at a time. Come cook, gather, and live the Roseto Effect.</p></div>
+    <div style="opacity:.7">dorinaskitchen@gmail.com<br>Roseto Valfortore, Italy</div>
+  </div>
+</footer>
+
+<div class="mbar"><div><small>Spring in Roseto</small><b>Apr 23 – May 3</b></div><a class="btn btn-primary" href="#apply">Apply</a></div>
+
+<script>document.querySelectorAll('.chips span').forEach(c=>c.onclick=()=>{c.parentNode.querySelectorAll('span').forEach(x=>x.classList.remove('on'));c.classList.add('on')})</script>
+</body>
+</html>
